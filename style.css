@@ -1,0 +1,388 @@
+/* ==========================================================
+   HANGOUT THEME  ·  aligned + fast
+   Perf profile:
+     - No backdrop-filter          (was the main cost)
+     - No animated background      (static gradient, cached)
+     - No SVG noise overlay        (was a full-page filter render)
+     - CSS Grid for all alignment  (no flex-wrap recalcs on resize)
+     - Only one infinite animation (the cursor, snapped with steps)
+   ========================================================== */
+
+:root {
+  --bg-0:      #12091c;
+  --card:      rgba(32, 18, 48, 0.94);
+  --card-edge: rgba(255, 200, 140, 0.12);
+
+  --ink:       #f4ecff;
+  --ink-dim:   #b8a8cc;
+  --ink-faint: #6b5c82;
+
+  --amber:     #ff9a4d;
+  --magenta:   #d94fd4;
+  --violet:    #8a63ff;
+
+  --grad-warm: linear-gradient(135deg, #ff9a4d 0%, #d94fd4 100%);
+
+  --r-lg:   36px;
+  --r-md:   18px;
+  --r-pill: 999px;
+
+  /* one spacing scale, used everywhere */
+  --s-1:  6px;
+  --s-2: 12px;
+  --s-3: 18px;
+  --s-4: 26px;
+  --s-5: 36px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; }
+
+body {
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--bg-0);
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: var(--s-4);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ----------------------------------------------------------
+   BACKDROP — one static layer, rendered once
+   ---------------------------------------------------------- */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle 40vmax at 15% 20%,
+      rgba(255, 154,  77, 0.22), transparent 65%),
+    radial-gradient(circle 44vmax at 85% 78%,
+      rgba(138,  99, 255, 0.20), transparent 65%),
+    radial-gradient(circle 32vmax at 55% 50%,
+      rgba( 61, 218, 212, 0.12), transparent 68%);
+}
+
+/* ----------------------------------------------------------
+   CARD
+   ---------------------------------------------------------- */
+.app-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 640px;
+  padding: var(--s-5);
+
+  display: grid;
+  gap: var(--s-4);
+
+  background: var(--card);
+  border: 1px solid var(--card-edge);
+  border-radius: var(--r-lg);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.6);
+
+  /* isolate this subtree from the rest of the page */
+  contain: layout paint style;
+
+  animation: cardIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+/* top rim light */
+.app-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  border-radius: var(--r-lg) var(--r-lg) 0 0;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(255, 154,  77, 0.55),
+    rgba(217,  79, 212, 0.45),
+    transparent);
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+/* ----------------------------------------------------------
+   HEADER — logo / title / tag on one baseline
+   ---------------------------------------------------------- */
+.app-header {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--s-3);
+}
+
+.logo-placeholder {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  object-fit: cover;
+  background: #2a1a3e;
+  border: 2px solid var(--amber);
+}
+
+.app-header h1 {
+  font-size: 1.65rem;
+  font-weight: 800;
+  letter-spacing: -0.4px;
+  line-height: 1.15;
+  background: linear-gradient(135deg, #fff3e0, #d94fd4);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.beta-tag {
+  padding: 4px 12px;
+  border-radius: var(--r-pill);
+  background: var(--grad-warm);
+  color: #1a0f28;
+  font-size: 0.66rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.9px;
+  white-space: nowrap;
+}
+
+/* ----------------------------------------------------------
+   HERO LINE — text and cursor stay on one line
+   ---------------------------------------------------------- */
+.demo-prompt {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: var(--s-3) var(--s-3);
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(255, 154, 77, 0.16);
+  border-radius: var(--r-md);
+  min-width: 0;
+}
+
+.demo-prompt span {
+  font-size: 0.95rem;
+  color: var(--ink-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.demo-prompt .highlight-text {
+  color: var(--amber);
+  font-weight: 600;
+  min-width: 0;
+}
+
+.typing-cursor {
+  flex: 0 0 2px;
+  width: 2px;
+  height: 20px;
+  background: var(--magenta);
+  animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink {
+  0%, 49%   { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+/* ----------------------------------------------------------
+   FEATURE ROW — fixed 3-column grid, always equal
+   ---------------------------------------------------------- */
+.feature-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--s-2);
+}
+
+.feature-item {
+  display: grid;
+  grid-template-rows: auto auto;
+  justify-items: center;
+  align-content: center;
+  gap: var(--s-1);
+  padding: var(--s-3) var(--s-2);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--r-md);
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.feature-item:hover {
+  background: rgba(255, 154, 77, 0.10);
+  border-color: rgba(255, 154, 77, 0.28);
+}
+
+.feat-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  object-fit: contain;
+  padding: 5px;
+  background: #241535;
+}
+
+.feature-item span {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--ink-dim);
+  text-align: center;
+  line-height: 1.3;
+}
+
+/* ----------------------------------------------------------
+   TAGLINE
+   ---------------------------------------------------------- */
+.tagline {
+  padding-top: var(--s-3);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--ink-dim);
+}
+
+.tagline strong {
+  background: var(--grad-warm);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 700;
+}
+
+/* ----------------------------------------------------------
+   FORM PANEL — grid with one consistent gap
+   ---------------------------------------------------------- */
+.login-section {
+  display: grid;
+  gap: var(--s-3);
+  padding: var(--s-4);
+  background: rgba(0, 0, 0, 0.26);
+  border: 1px solid rgba(138, 99, 255, 0.18);
+  border-radius: var(--r-lg);
+}
+
+.login-section h2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+}
+
+.login-section h2 span {
+  padding: 3px 12px;
+  border-radius: var(--r-pill);
+  background: rgba(138, 99, 255, 0.20);
+  border: 1px solid rgba(138, 99, 255, 0.35);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  color: #c9b6ff;
+  white-space: nowrap;
+}
+
+.login-section .sub-text {
+  text-align: center;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: var(--ink-faint);
+  margin-top: calc(var(--s-3) * -1 + var(--s-1));
+}
+
+/* all form groups share the same gap — no per-element margins */
+.form-group {
+  display: grid;
+  gap: var(--s-1);
+}
+
+.form-group label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: var(--ink-dim);
+}
+
+.form-group input {
+  width: 100%;
+  padding: 13px 16px;
+  font: inherit;
+  font-size: 0.98rem;
+  color: #fff;
+  background: #140a1f;
+  border: 2px solid #2c1a40;
+  border-radius: 14px;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.form-group input::placeholder { color: #574866; }
+
+.form-group input:focus {
+  border-color: var(--amber);
+  background: #1a0f28;
+  box-shadow: 0 0 0 4px rgba(255, 154, 77, 0.14);
+}
+
+.btn-login {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: var(--r-pill);
+  font: inherit;
+  font-size: 1.08rem;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  color: #1a0f28;
+  background: var(--grad-warm);
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  will-change: transform;
+}
+
+.btn-login:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 28px rgba(255, 154, 77, 0.32);
+}
+
+.btn-login:active { transform: translateY(0) scale(0.985); }
+
+.footer-note {
+  text-align: center;
+  font-size: 0.7rem;
+  color: var(--ink-faint);
+}
+
+/* ----------------------------------------------------------
+   RESPONSIVE
+   ---------------------------------------------------------- */
+@media (max-width: 520px) {
+  :root { --s-4: 20px; --s-5: 22px; }
+
+  .app-card       { border-radius: 26px; }
+  .app-header h1  { font-size: 1.35rem; }
+  .login-section  { border-radius: 24px; padding: var(--s-3); }
+
+  .feature-row    { grid-template-columns: repeat(3, 1fr); }
+  .feature-item   { padding: var(--s-2) 4px; }
+  .feature-item span { font-size: 0.65rem; }
+}
+
+/* Respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .app-card      { animation: none; }
+  .typing-cursor { animation: none; opacity: 1; }
+}
